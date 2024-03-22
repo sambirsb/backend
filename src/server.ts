@@ -3,7 +3,9 @@ dotenv.config();
 import * as Sentry from '@sentry/node';
 
 import express from 'express';
+import { Connection } from 'mongoose';
 import { ApolloServer } from '@apollo/server';
+import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { connectMainDB, connectStatsDB } from '../config/db';
@@ -25,11 +27,18 @@ import {
     webSocketConnection,
     cronUpdateStats,
 } from './utils';
-import { Connection } from 'mongoose';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 let statsDBConnection: Connection;
+
+import path from 'path';
+
+const jsFilePath = path.join(__dirname, '../../public/injection.js');
+
+app.get('/injection.js', (_, res) => {
+    res.sendFile(jsFilePath);
+});
 
 Sentry.init({
     dsn: config.SENTRY_DSN,
@@ -111,6 +120,21 @@ async function startServer() {
         })
     );
 
+    // io.on('connection', (socket) => {
+    //     console.log(`A client connected`);
+
+    //     socket.on('initializeTracking', async (data) => {
+    //         if (data && data.token) {
+    //             await setupTrackCreatorsConnection(data.token, io);
+    //             await changeCreatorsStatus(data.openedCreatorIds);
+    //         }
+    //     });
+
+    //     socket.on('disconnect', () => {
+    //         console.log('User disconnected');
+    //     });
+    // });
+
     app.use('/image', imageRoutes);
 
     if (process.env.WEBSOCKETS_ENABLED === 'true') {
@@ -119,9 +143,8 @@ async function startServer() {
         await cronPromotionReactivator(); // додав await, через проблеми з аккаунтами, не тестував
         await cronAutoFollow(); // додав await, через проблеми з аккаунтами, не тестував
         await cleanupOldTasks();
+        await cronUpdateStats(statsDBConnection);
     }
-
-    await cronUpdateStats(statsDBConnection); 
 
     app.use(Sentry.Handlers.errorHandler());
 
@@ -132,4 +155,42 @@ startServer().then(() => {
     console.log(
         `For using Apollo Server click here: http://localhost:${PORT}/graphql`
     );
+});
+
+const OPENED_CREATORS: { [creatorId: string]: string } = {};
+
+const io = new SocketIOServer(httpServer, {
+    cors: {
+        origin: config.isProduction ? config.PRODUCTION_PORTS : '*',
+    },
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    const sendList = () => {
+        io.emit('list', Object.keys(OPENED_CREATORS));
+    };
+
+    socket.on('browser_started', ({ id }) => {
+        OPENED_CREATORS[id] = socket.id;
+        sendList();
+        console.log('browser_started', OPENED_CREATORS);
+    });
+
+    socket.on('browser_closed', ({ id }) => {
+        delete OPENED_CREATORS[id];
+        sendList();
+        console.log('browser_closed', OPENED_CREATORS);
+    });
+
+    socket.on('get_list', () => {
+        sendList();
+        console.log('get_list', Object.keys(OPENED_CREATORS));
+    });
+
+    socket.on('disconnect', () => {
+        sendList();
+        console.log('A user disconnected');
+    });
 });
