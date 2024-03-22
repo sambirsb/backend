@@ -1,0 +1,125 @@
+type User {
+    id: ID!
+    fullName: String!
+    email: String!
+    passwordHash: String!
+    resetPassword: ResetPassword
+    role: UserRole
+    avatarUrl: String
+    isTwoFactorEnabled: Boolean
+    lastActivity: Date
+}
+
+type UserDTO {
+    id: ID!
+    fullName: String!
+    email: String!
+    role: UserRole
+    lastActivity: Date
+    avatarUrl: String
+    isTwoFactorEnabled: Boolean
+}
+
+enum UserRole {
+    ADMIN
+    USER
+}
+
+type ResetPassword {
+    resetCode: Int
+    expire: String
+}
+
+input RegisterUserInput {
+    email: String!
+    password: String!
+    fullName: String!
+}
+
+input LoginInput {
+    login: String!
+    password: String!
+}
+
+type OldRegisterOrLoginResponse {
+    message: String!
+    user: UserDTO
+    token: String!
+    creators: [CreatorForUser]
+}
+
+type RegisterOrLoginResponse {
+    message: String!
+    user: UserDTO
+    token: String!
+    teams: [TeamWithCreators]
+}
+
+input changePasswordInput {
+    login: String!
+    resetCode: Int!
+    newPassword: String!
+}
+
+input CreateNewPasswordInput {
+    oldPassword: String!
+    newPassword: String!
+}
+
+input ChangeUserInput {
+    name: String
+    avatarUrl: String
+}
+
+type TeamWithCreators{
+    id: ID!
+    ownerId: ID!
+    teamMemberIds: [ID!]!   
+    teamName: String!
+    logoUrl: String
+    creators: [CreatorForUser]
+}
+
+type PermissionForUser{
+    startOFProfile: Boolean!
+    seeCreatorStats: Boolean!
+    seeTracking: Boolean!
+    setupMessagesFunctions: Boolean!
+    modifyCreatorSettings: Boolean!
+}
+
+type CreatorForUser {
+    id: ID
+    link: String
+    license: License
+    userName: String
+    avatarURL: String
+    creatorAuth: CreatorAuth
+    appAuth: AppAuth
+    createdAt: String
+    updatedAt: String
+    proxy: Proxy
+    permissions: PermissionForUser
+    joinDate: Date
+}
+
+type GetUserByTokenResponse {
+    user: UserDTO
+    token: String
+    teams: [TeamWithCreators]
+}
+
+type Mutation {
+    register(input: RegisterUserInput): RegisterOrLoginResponse!
+    login(input: LoginInput): RegisterOrLoginResponse!
+    forgotPassword(login: String!): String!
+    changePassword(input: changePasswordInput!): String!
+    createNewPassword(input: CreateNewPasswordInput): UserDTO!
+    changeUser(input: ChangeUserInput): UserDTO
+}
+
+type Query {
+    getUserByToken: GetUserByTokenResponse
+}
+
+

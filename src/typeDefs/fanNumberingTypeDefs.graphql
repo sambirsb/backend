@@ -1,0 +1,21 @@
+type FanNumbering {
+    id: ID!
+    creatorId: ID!
+    createdBy: ID!
+    active: Boolean!
+    numbers: Int!
+}
+
+input ChangeFanNumberingInput {
+    id: ID!
+    active: Boolean
+    numbers: Int
+}
+
+type Mutation {
+    changeFanNumbering(input: ChangeFanNumberingInput): FanNumbering  
+}
+
+type Query {
+    getFanNumbering(creatorId: String): FanNumbering
+}

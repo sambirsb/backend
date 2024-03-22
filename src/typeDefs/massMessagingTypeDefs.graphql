@@ -1,0 +1,87 @@
+scalar Date
+
+type MassMessaging {
+    id: ID!
+    creatorId: ID!
+    status: Boolean!
+    startDate: Date
+    endDate: Date
+    excludeFans: Int!
+    activeSub: Boolean!
+    neverChatBefore: Boolean!
+    sentTo: Int
+    createdBy: ID!
+}
+
+type MassMessagingMessageForMessaging {
+    id: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+type MassMessagingWithMessages {
+    id: ID!
+    creatorId: ID!
+    status: Boolean!
+    startDate: Date
+    endDate: Date
+    excludeFans: Int!
+    activeSub: Boolean!
+    neverChatBefore: Boolean!
+    sentTo: Int
+    createdBy: ID!
+    massMessages: [MassMessagingMessageForMessaging]
+}
+
+input MassMessagingCreate {
+    creatorId: ID!
+    status: Boolean
+    startDate: Date
+    endDate: Date
+    excludeFans: Int
+    activeSub: Boolean
+    neverChatBefore: Boolean
+}
+
+input CreateMassMessageInputForMessaging {
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input CreateMassMessagingInput {
+    massMessaging: MassMessagingCreate!
+    messages: [CreateMassMessageInputForMessaging]
+}
+
+input ChangeMassMessagingInput {
+    id: ID!
+    status: Boolean
+    startDate: Date
+    endDate: Date
+    excludeFans: Int
+    activeSub: Boolean
+    neverChatBefore: Boolean
+}
+
+type MassMessagingResponse {
+    message: String
+    massMessaging: MassMessaging
+}
+
+type MassMessagingWithMessagesResponse {
+    message: String
+    massMessaging: MassMessagingWithMessages
+}
+
+type Mutation {
+    createMassMessaging(input: CreateMassMessagingInput): MassMessagingWithMessagesResponse
+    duplicateMassMessaging(massMessagingId: String): MassMessagingResponse
+    changeMassMessaging(input: ChangeMassMessagingInput): MassMessagingResponse
+}
+
+type Query {
+    getAllMassMessaging(creatorId: String): [MassMessagingWithMessages]
+    getOneMassMessaging(massMessagingId: String): MassMessaging
+}

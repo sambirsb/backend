@@ -1,0 +1,75 @@
+type Proxy {
+    id: ID!
+    zone: ProxyZone
+    proxyType: ProxyType!
+    host: String
+    port: String
+    userName: String
+    password: String
+    creatorId: ID
+}
+
+type ProxyZone {
+    country: EnabledRegionProxy
+    number: String
+}
+
+enum EnabledRegionProxy {
+    USA
+    Germany
+    Spain
+}
+
+enum ProxyType {
+    HTTP
+    AUTO
+}
+
+type CreatorWithProxy {
+    id: ID!
+    link: String!
+    userId: ID!
+    license: License
+    createdAt: String!
+    updatedAt: String!
+    proxy: Proxy
+    photoUrl: String
+    name: String
+}
+
+type CountryMap {
+    country: EnabledRegionProxy!
+    count: Int!
+}
+
+type chooseProxyResponse {
+    message: String
+    proxy: Proxy
+}
+
+input ChooseHTTPProxyInput {
+    creatorId: String!,
+    host: String!,
+    port: String!,
+    userName: String!,
+    password: String!
+}
+
+input ChooseAUTOProxyInput {
+    creatorId: String!,
+    country: EnabledRegionProxy!
+}
+
+type Mutation {
+    chooseHTTPProxy(input: ChooseHTTPProxyInput ): chooseProxyResponse
+    chooseAUTOProxy(input: ChooseAUTOProxyInput): chooseProxyResponse
+    addAUTOProxy(country: EnabledRegionProxy!): chooseProxyResponse
+    deleteAUTOProxy(proxyId: String): String
+    checkProxyIp(creatorId: String): String
+}
+
+type Query {
+    getCreatorProxy(creatorId: String): Proxy
+    getUserCreatorsProxy: [CreatorWithProxy]
+    getAvailableCountries: [CountryMap]
+}

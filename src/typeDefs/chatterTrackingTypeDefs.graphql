@@ -1,0 +1,52 @@
+type ChatterTracking {
+    id: ID!
+    teamMemberId: ID!
+    msgsSent: Int
+    ppvsSent: Int
+    ppvsUnlocked: Int
+    sales: Int
+    fansChatted: Int
+    createdAt: Date!
+}
+
+type ChatterTeamMember{
+    avatarUrl: String
+    name: String
+    online: String
+}
+
+type OneChatterStatistic{
+    teamMember: ChatterTeamMember!
+    msgsSent: Int!
+    ppvsSent: Int!
+    ppvsUnlocked: Int!
+    goldenRatio: Float!
+    sales: Int!
+    fansChatted: Int!   
+}
+
+type ChatterTrackingResponse{
+    totalSales: Int!
+    unlockRate: Int!
+    totalPPVsUnlocked: Int!
+    avgFansChatted: Int!
+    statistic: [OneChatterStatistic]
+}
+
+input ChangeChatterTrackingInput {
+    teamMemberId: ID!
+    msgsSent: Int
+    ppvsSent: Int
+    ppvsUnlocked: Int
+    sales: Int
+    fansChatted: Int
+}
+
+type Mutation {
+    changeChatterTrackingApp(input: ChangeChatterTrackingInput): ChatterTracking  
+}
+
+type Query {
+    getChatterTrackingApp(teamMemberId: String): ChatterTracking
+    getChatterTracking(input: DatesFilterInput): ChatterTrackingResponse
+}

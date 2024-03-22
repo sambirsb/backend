@@ -1,0 +1,28 @@
+type WelcomeSettings {
+    id: ID!
+    creatorId: ID!
+    createdBy: ID!
+    active: Boolean!
+    time: Int!
+}
+
+input ChangeWelcomeSettingsInput {
+    id: ID!
+    active: Boolean
+    time: Int
+}
+
+type WelcomeSettingsResponse {
+    message: String
+    welcomeSettings: WelcomeSettings
+}
+
+type Mutation {
+    changeWelcomeSettings(input: ChangeWelcomeSettingsInput): WelcomeSettingsResponse  
+
+    temporarySendWelcomeMessage(creatorId: String): String 
+}
+
+type Query {
+    getWelcomeSettings(creatorId: String): WelcomeSettings
+}

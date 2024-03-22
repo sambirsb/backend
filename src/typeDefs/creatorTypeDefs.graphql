@@ -1,0 +1,101 @@
+type Creator {
+    id: ID!
+    link: String!
+    userId: ID!
+    license: License
+    userName: String
+    avatarURL: String
+    joinDate: Date
+    creatorAuth: CreatorAuth!
+    preferences: [Preferences]
+    collectionListId: String
+    appAuth: AppAuth
+}
+
+type Preferences {
+    text: String!
+    subscriberId: String!
+}
+
+type CreatorAuth {
+    user_agent: String
+    x_bc: String
+    user_id: String!
+    cookie: String
+    expiredAt: Date
+}
+
+type License {
+    subscriptionId: String
+    customerId: String
+    startDate: Date
+    endDate: Date
+    status: Boolean
+}
+
+type CreatorResponse {
+    message: String
+    creator: Creator
+}
+
+type CreatorDeleteResponse {
+    message: String
+}
+
+type ProxyForCreator {
+    id: ID!
+    proxyType: ProxyType!
+    host: String
+    port: String
+    userName: String
+    password: String
+    country: String
+}
+
+type CreatorForAddCreatorResponse {
+    id: ID!
+    link: String!
+    userId: ID!
+    license: License
+    userName: String
+    avatarURL: String
+    joinDate: Date
+    creatorAuth: CreatorAuth
+    proxy: ProxyForCreator
+}
+
+type AddCreatorResponse {
+    message: String
+    creator: CreatorForAddCreatorResponse
+}
+
+type AppAuth {
+    sess: String
+    bcTokenSha: String
+}
+
+input ChangeCreatorAuthInput {
+    user_agent: String
+    x_bc: String
+    user_id: String!
+    cookie: String
+    expiredAt: Date
+}
+
+input CreatorAuthInput {
+    user_agent: String!
+    x_bc: String!
+    user_id: String!
+    cookie: String!
+}
+
+type Mutation {
+    addCreator(link: String): AddCreatorResponse
+    deleteCreator(creatorId: String): CreatorDeleteResponse
+    changeCreatorAuth(input: ChangeCreatorAuthInput): String
+}
+
+type Query {
+    getCreatorAuth(user_id: String): CreatorAuth
+    getCreatorById(creatorId: String): Creator
+}

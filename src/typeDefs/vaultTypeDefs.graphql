@@ -1,0 +1,13 @@
+type VaultMedia {
+    id: ID
+    media_id: String!
+    fileName: String
+    price: String
+    creatorId: ID!
+    scriptId: ID
+    createdBy: ID!
+}
+
+type Query {
+    getAllCreatorVaultMedia(creatorId: String): [VaultMedia]
+}

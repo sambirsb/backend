@@ -1,0 +1,112 @@
+type LoginExtensionResponse {
+    token: String
+    visibilitySettings: Visibility
+    teamMemberId: String
+}
+
+type CreatorWithoutPreferences {
+    id: ID!
+    link: String!
+    userId: ID!
+    license: License
+    userName: String
+    avatarURL: String
+    joinDate: Date
+    creatorAuth: CreatorAuth
+}
+
+type GetPreferencesByChatterIdExtensionResponse {
+    preferences: [Preferences]
+    chatter: CreatorWithoutPreferences
+}
+
+type PreferencesForChatterId {
+    message: String
+    preferences: [Preferences]
+}
+
+type VisibilitySettingByExtension {
+    user_id: String
+    visibilitySetting: Visibility
+}
+
+type ScriptExtension {
+    name:  String!
+    scriptId: String!
+}
+
+type ExtensionTokenResponse {
+    token: String
+    visibilitySettings: Visibility
+}
+
+type AddVaultMediaResponse {
+    message: String
+    vaultMedia: VaultMedia
+}
+
+input LoginExtensionInput {
+    email: String!
+    password: String!
+    user_id: String!
+}
+
+input GetPreferencesByChatterIdExtensionInput {
+    chatterId: String!
+    user_id: String!
+}
+
+input AddPreferencesInput {
+    user_id: String!
+    chatterId: String!
+    preferencesText: [String!]!
+}
+
+input GetScriptsByKeyLettersInput {
+    user_id: String!
+    keyLetters: String!
+}
+
+input VaultMediaExtInput {
+    media_id: String!
+    user_id: String!
+    price: Float!
+    scriptId: String
+    fileName: String!
+}
+
+input AddCreatorExtensionInput {
+    link: String!
+    userName: String!
+    avatarURL: String
+    joinDate: Date!
+    user_id: String!
+}
+
+input AppDataExtInput {
+    user_id: String!
+    sess: String
+    bcTokenSha: String
+}
+
+type Mutation {
+    addCreatorExtension(input: AddCreatorExtensionInput): LoginExtensionResponse
+    loginExtension(input: LoginExtensionInput!): LoginExtensionResponse
+    changeCreatorAuthByExtension(input: ChangeCreatorAuthInput): String
+    addPreferences(input: AddPreferencesInput): PreferencesForChatterId
+    addVaultMediaExtension(input: VaultMediaExtInput): AddVaultMediaResponse
+    changeAppAuthExtension(input: AppDataExtInput): String
+}
+
+type Query {
+    getPreferencesByChatterIdExtension(input: GetPreferencesByChatterIdExtensionInput): GetPreferencesByChatterIdExtensionResponse
+    getVisibilitySettingByTokenExtension(user_id: String): VisibilitySettingByExtension
+    getScriptsByKeyLettersExtension(input: GetScriptsByKeyLettersInput): [Script]
+    getAllScriptsExtension(user_id: String): [ScriptExtension]
+    getAllCreatorVaultMediaExtension(user_id: String): [VaultMedia]
+    getCreatorProxyExtension(user_id: String): Proxy
+    getDisplaySettingsExtension(user_id: String): DisplaySettings
+    getAllDisplayColorsExtension(user_id: String): [DisplayColor]
+    getExtensionTokenThrowToken(creatorId: String): ExtensionTokenResponse
+    getAppExtensionData(creatorId: String): LoginExtensionResponse
+}

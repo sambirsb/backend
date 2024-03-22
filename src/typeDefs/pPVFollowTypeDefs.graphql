@@ -1,0 +1,28 @@
+type PPVFollow {
+    id: ID!
+    creatorId: ID!
+    active: Boolean!
+    include: Boolean!
+    time: Int!
+    createdBy: ID!
+}
+
+type changePPVFollow {
+    message: String
+    pPVFollow: PPVFollow
+}
+
+input ChangePPVFollowInput {
+    id: ID!
+    active: Boolean
+    include: Boolean
+    time: Int
+}
+
+type Mutation {
+    changePPVFollow(input: ChangePPVFollowInput): changePPVFollow
+}
+
+type Query {
+    getPPVFollow(creatorId: String!): PPVFollow
+}

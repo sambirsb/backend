@@ -1,0 +1,10 @@
+type PublicData {
+    _id: String
+    avatarURL: String
+    userName: String
+    joinDate: String
+}
+
+type Query {
+    getPublicDataFromLink(link: String!): PublicData
+}

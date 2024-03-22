@@ -1,0 +1,141 @@
+type ChatterShort{
+    name: String
+    received: Float}
+
+type ReceivedHistory {
+    date: Date
+    received: Float
+}
+
+type RevenueChart{
+    receivedHistory: [ReceivedHistory]
+    name: String
+}
+
+type ChatterDetailed{
+    id: String
+    name: String
+    activeTime: Int
+    inActiveTime: Int
+    totalRevenue: Float
+    avgResponse: Int
+    sentMessages: Int
+}
+
+type OldChatterTracking{
+    topChattersChart: [ChatterShort]
+    revenueChart: [RevenueChart]
+    chatterTable: [ChatterDetailed]
+}
+
+type totalSalesChart{
+    date: String
+    ppvRevenue: Int
+    tipsRevenue: Int
+}
+
+type TotalSales{
+    chart: [totalSalesChart]
+    total: Int
+}
+
+type ppvPurchaseRateChart{
+    date: Date
+    sendPPV: Int
+    boughtPPV: Int
+}
+
+type PpvPurchaseRate{
+    chart: [ppvPurchaseRateChart]
+    percent: Int
+}
+
+type sentMessagesChart{
+    date: Date
+    count: Int
+}
+
+type SentMessages{
+    chart: [sentMessagesChart]
+    count: Int
+}
+
+type sentKeystrokesChart{
+    date: Date
+    count: Int
+}
+
+type Keystrokes{
+    chart: [sentKeystrokesChart]
+    count: Int
+}
+
+type OnlineTime{
+    activeTime: Int
+    inActiveTime: Int
+    onlineTime: Int
+}
+
+type OneChatterInfo{
+    totalSales: TotalSales
+    ppvPurchaseRate: PpvPurchaseRate
+    sentMessages: SentMessages
+    keystrokes: Keystrokes
+    onlineTime: OnlineTime
+    date: Date
+    totalRevenue: Float
+    newSubs: Int
+    newSubsRevenue: Float
+    recSubsRevenue: Float
+    tipsRevenue: Float
+    messagesRevenue: Float
+    textingRation: Int
+    openChats: Int
+    sellingChats: Int
+    linkClicks: Int
+    conversionRate: Int
+}
+
+type PpvVaultMessage{
+    ppvId: String!
+	createdAt: Date
+	text: String
+	sent: Int
+	bought: Int
+	purchaseRate: Int
+	netRevenue: Float
+	avgNetPrice: Float
+}
+
+type PpvTrackingMessage{
+	text: String
+	sentAt: Date
+	purchased: Boolean
+	sender: String
+	price: Float
+    messageId: String
+}
+
+input GetDatesCreatorIdInput {
+    startDate: Date
+    endDate: Date
+    creatorId: ID!
+}
+
+input GetChattersTrackingInput {
+    startDate: Date
+    endDate: Date
+    creatorId: ID!
+}
+
+input GetOneChatterTrackingInput {
+    startDate: Date
+    endDate: Date
+    chatterId: String!
+    creatorId: String!
+}
+
+type Query {
+    getOldChattersTracking(input: GetDatesCreatorIdInput): OldChatterTracking
+    getOneChatterTracking(input: GetOneChatterTrackingInput): OneChatterInfo
+}

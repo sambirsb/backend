@@ -1,0 +1,57 @@
+
+type PpvTrackingVaultResponse{
+    revenue: Float
+    purchaseRate: Int
+    purchases: Int
+    ppvMessages: [PpvVaultMessage]
+    name: String
+}
+
+type PpvTrackingVaultMessagesResponse{
+    sent: Int
+    bought: Int
+    avgNetPrice: Float
+    netRevenue: Float
+    purchaseRate: Int
+    message: PpvTrackingMessage
+}
+
+type PPVTrackingStatistic{
+    id: String!
+    name: String!
+    revenue: Int!
+    conversion: Int!
+    lastSale: Date
+    qtyPictures: Int!
+    qtyVideos: Int!
+}
+
+type PpvTrackingResponse {
+    revenue: Int!
+    purchaseRate: Int!
+    purchases: Int!
+    statistic: [PPVTrackingStatistic]
+}
+
+input GetPPVTrackingInput{
+    startDate: Date!
+    endDate: Date!
+    creatorIds: [String!]!
+}
+
+input GetPpvTrackingVaultMessagesInput {
+    vaultId: String!
+    ppvId: String!
+    creatorId: String!
+}
+
+input GetPpvTrackingVaultInput {
+    vaultId: String!
+    creatorId: String!
+}
+
+type Query {
+    getPPVTracking(input: DatesFilterManyCreatorIdsInput): PpvTrackingResponse
+    getPPVTrackingVault(input: GetPpvTrackingVaultInput): PpvTrackingVaultResponse
+    getPPVTrackingVaultMessages(input: GetPpvTrackingVaultMessagesInput): PpvTrackingVaultMessagesResponse
+}

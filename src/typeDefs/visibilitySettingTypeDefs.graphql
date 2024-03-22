@@ -1,0 +1,30 @@
+type Visibility {
+    id: ID!
+    creatorId: ID!
+    showScripts: Boolean
+    showFanDetails: Boolean
+    showGlobalInfo: Boolean
+    showFanSpending: Boolean
+}
+
+input VisibilityInput {
+    id: ID
+    creatorId: ID
+    showScripts: Boolean
+    showFanDetails: Boolean
+    showGlobalInfo: Boolean
+    showFanSpending: Boolean
+}
+
+type VisibilityChangeResponse {
+    message: String
+    visibility: Visibility
+}
+
+type Mutation {
+    changeCreatorVisibility(input: VisibilityInput): VisibilityChangeResponse
+}
+
+type Query {
+    getCreatorVisibility(creatorId: String!): VisibilityChangeResponse
+}

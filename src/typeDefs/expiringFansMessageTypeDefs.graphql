@@ -1,0 +1,37 @@
+type ExpiringFansMessage {
+    id: ID!
+    expiringFans: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input CreateExpiringFansMessageInput {
+    expiringFans: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input ChangeExpiringFansMessageInput {
+    id: ID!
+    text: String
+    fallbackName: String
+    media: [String]
+}
+
+type ExpiringFansMessageResponse {
+    message: String
+    expiringFans: ExpiringFansMessage
+}
+
+type Mutation {
+    createExpiringFansMessage(input: CreateExpiringFansMessageInput!): ExpiringFansMessageResponse
+    changeExpiringFansMessage(input: ChangeExpiringFansMessageInput!): ExpiringFansMessageResponse
+    deleteExpiringFansMessage(expiringFansMessageId: String): String
+}
+
+type Query {
+    getOneExpiringFansMessage(expiringFansMessageId: String!): ExpiringFansMessage
+    getAllExpiringFansMessages(creatorId: String!): [ExpiringFansMessage]
+}

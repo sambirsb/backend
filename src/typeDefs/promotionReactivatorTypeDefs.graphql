@@ -1,0 +1,21 @@
+type PromotionReactivator {
+    id: ID!
+    creatorId: ID!
+    createdBy: ID!
+    active: Boolean!
+    period: Int!
+}
+
+input ChangePromotionReactivatorInput {
+    id: ID!
+    active: Boolean
+    period: Int
+}
+
+type Mutation {
+    changePromotionReactivator(input: ChangePromotionReactivatorInput): PromotionReactivator  
+}
+
+type Query {
+    getPromotionReactivator(creatorId: String): PromotionReactivator
+}

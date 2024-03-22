@@ -1,0 +1,37 @@
+type PPVMessage {
+    id: ID!
+    creatorId: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+type PPVMessageResponse {
+    message: String
+    pPVMessage: PPVMessage
+}
+
+input CreatePPVMessageInput {
+    creatorId: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input ChangePPVMessageInput {
+    id: ID!
+    text: String
+    fallbackName: String
+    media: [String]
+}
+
+type Mutation {
+    createPPVMessage(input: CreatePPVMessageInput): PPVMessageResponse
+    changePPVMessage(input: ChangePPVMessageInput): PPVMessageResponse
+    deletePPVMessage(pPVMessageId: String!): String
+}
+
+type Query {
+    getOnePPVMessage(pPVMessageId: String!): PPVMessage
+    getAllPPVMessage(creatorId: String): [PPVMessage]
+}

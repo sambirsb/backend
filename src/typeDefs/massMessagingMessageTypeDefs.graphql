@@ -1,0 +1,37 @@
+type MassMessagingMessage {
+    id: ID!
+    massMess: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input CreateMassMessageInput {
+    massMess: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input ChangeMassMessageInput {
+    id: ID!
+    text: String
+    fallbackName: String
+    media: [String]
+}
+
+type MassMessagingMessageResponse {
+    message: String
+    massMessage: MassMessagingMessage
+}
+
+type Mutation {
+    createMassMessage(input: CreateMassMessageInput): MassMessagingMessageResponse
+    changeMassMessage(input: ChangeMassMessageInput): MassMessagingMessageResponse
+    deleteMassMessage(massMessageId: String): String
+}
+
+type Query {
+    getAllMessages(massMessId: String): [MassMessagingMessage]
+    getOneMassMessage(massMessageId: String): MassMessagingMessage
+}

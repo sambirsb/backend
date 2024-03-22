@@ -1,0 +1,30 @@
+type DisplaySettings {
+    id: ID!
+    creatorId: ID!
+    createdBy: ID!
+    audioId: Int!
+    audioVolume: Int!
+    emojis: String
+    emojiStatus: Boolean!
+}
+
+input ChangeDisplaySettingsInput {
+    id: ID!
+    audioId: Int!
+    audioVolume: Int!
+    emojis: String
+    emojiStatus: Boolean!
+}
+
+type DisplaySettingsResponse {
+    message: String
+    displaySettings: DisplaySettings
+}
+
+type Mutation {
+    changeDisplaySettings(input: ChangeDisplaySettingsInput): DisplaySettingsResponse  
+}
+
+type Query {
+    getDisplaySettings(creatorId: String): DisplaySettings
+}

@@ -1,0 +1,50 @@
+type Script {
+    id: ID!
+    scriptFolder: ID!
+    name: String!
+    text: String!
+    fallbackName: String!
+    number: Int!
+    customName: NameEnum!
+    fanName: NameEnum!
+}
+
+enum NameEnum {
+    UPPER
+    LOWER
+    PROPER
+}
+
+input CreateScriptInput {
+    scriptFolder: ID!
+    name: String!
+    text: String!
+    fallbackName: String!
+    customName: NameEnum!
+    fanName: NameEnum!
+}
+
+input UpdateScriptInput {
+    id: ID!
+    scriptFolder: ID
+    name: String
+    text: String
+    fallbackName: String
+    customName: NameEnum
+    fanName: NameEnum
+}
+
+type ScriptResponse {
+    message: String
+    script: Script
+}
+
+type Mutation {
+    createScript(input: CreateScriptInput): ScriptResponse
+    changeScript(input: UpdateScriptInput): ScriptResponse
+    deleteScript(id: String!): String
+}
+
+type Query {
+    getScriptById(id: String!): Script
+}

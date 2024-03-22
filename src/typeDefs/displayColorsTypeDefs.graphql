@@ -1,0 +1,36 @@
+type DisplayColor {
+    id: ID!
+    spend: Int!
+    color: String!
+    inboxColor: String!
+}
+
+input CreateDisplayColorInput {
+    displaySettings: ID!
+    spend: Int!
+    color: String!
+    inboxColor: String!
+}
+
+input ChangeDisplayColorInput {
+    id: ID!
+    spend: Int!
+    color: String!
+    inboxColor: String!
+}
+
+type DisplayColorResponse {
+    message: String
+    displayColor: DisplayColor
+}
+
+type Mutation {
+    createDisplayColor(input: CreateDisplayColorInput!): DisplayColorResponse
+    changeDisplayColor(input: ChangeDisplayColorInput!): DisplayColorResponse
+    deleteDisplayColor(displayColorId: String): String
+}
+
+type Query {
+    getOneDisplayColor(displayColorId: String!): DisplayColor
+    getAllDisplayColors(creatorId: String!): [DisplayColor]
+}

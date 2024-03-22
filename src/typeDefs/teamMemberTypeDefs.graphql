@@ -1,0 +1,125 @@
+type Team {
+    id: ID!
+    ownerId: ID!
+    teamMemberIds: [ID!]!
+    teamName: String!
+    logoUrl: String
+    creatorIds: [ID]
+}
+
+type TeamMember {
+    id: ID!
+    teamId: ID!
+    userId: ID!
+    memberName: String!
+    active: Boolean!
+    note: String
+    permissions: [Permissions]
+    role: MemberRoleSchema
+    acceptLink: AcceptLink
+    lastOnlineAt: Date
+}
+
+type TeamMemberForResp {
+    id: ID!
+    teamId: ID!
+    userId: ID!
+    memberName: String!
+    active: Boolean!
+    note: String
+    permissions: [Permissions]
+    role: MemberRoleSchema
+    lastOnlineAt: Date
+}
+
+type TeamMemberWithEmails {
+    id: ID!
+    teamId: ID!
+    userId: ID!
+    email: String!
+    memberName: String!
+    active: Boolean!
+    note: String
+    permissions: [Permissions]
+    role: MemberRoleSchema
+    lastOnlineAt: Date
+}
+
+type AcceptLink {
+    memberToken: String
+    expire: Date
+}
+
+enum MemberRoleSchema {
+    Owner
+    Member
+}
+
+type Permissions {
+    creatorId: ID!
+    startOFProfile: Boolean!
+    seeCreatorStats: Boolean!
+    seeTracking: Boolean!
+    setupMessagesFunctions: Boolean!
+    modifyCreatorSettings: Boolean!
+}
+
+type TeamMemberResponse {
+    message: String!
+    teamMember: TeamMemberForResp!
+}
+
+type TeamResponse {
+    id: ID!
+    ownerId: ID!
+    teamName: String!
+    logoUrl: String
+}
+
+type MyTeamPopulated {
+    team: TeamResponse
+    members: [TeamMemberWithEmails]
+}
+
+input PermissionInput {
+    creatorId: ID!
+    startOFProfile: Boolean
+    seeCreatorStats: Boolean
+    seeTracking: Boolean
+    setupMessagesFunctions: Boolean
+    modifyCreatorSettings: Boolean
+}
+
+input AddTeamMemberInput {
+    ownerId: ID!
+    email: String!
+    name: String!
+    note: String
+    permissions: [PermissionInput]
+}
+
+input ChangeTeamMemberInput {
+    teamMemberId: String!
+    name: String
+    note: String
+    permissions: [PermissionInput]
+}
+
+input ChangeTeamInput{
+    name: String
+    logoUrl: String
+}
+
+type Mutation {
+    addTeamMember(input: AddTeamMemberInput): TeamMemberWithEmails!
+    acceptTeamMember(memberToken: String): TeamMemberResponse!
+    changeTeamMember(input: ChangeTeamMemberInput): TeamMemberWithEmails!
+    deleteTeamMember(teamMemberId: String): String!
+    changeLastOnlineExtension(teamMemberId: String!): TeamMemberForResp
+    changeTeam(input: ChangeTeamInput): Team
+}
+
+type Query {
+    getMyTeamMembers: [TeamMemberWithEmails]
+    getMyTeam: MyTeamPopulated
+}

@@ -1,0 +1,31 @@
+type DateAndCount{
+    count: Float!
+    date: Date!
+}
+
+type DateAndAmount {
+    date: Date
+    amount: Float
+}
+
+type StatisticSection{
+    chart: [DateAndCount!]!
+    total: Float!
+}
+
+input DatesFilterCreatorIdInput {
+    startDate: Date!
+    endDate: Date!
+    creatorId: ID!
+}
+
+input DatesFilterManyCreatorIdsInput {
+    startDate: Date!
+    endDate: Date!
+    creatorIds: [String!]!
+}
+
+input DatesFilterInput {
+    startDate: Date!
+    endDate: Date!
+}

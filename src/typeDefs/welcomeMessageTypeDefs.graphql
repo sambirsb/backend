@@ -1,0 +1,37 @@
+type WelcomeMessage {
+    id: ID!
+    welcomeSettings: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input CreateWelcomeMessageInput {
+    welcomeSettings: ID!
+    text: String!
+    fallbackName: String!
+    media: [String]
+}
+
+input ChangeWelcomeMessageInput {
+    id: ID!
+    text: String
+    fallbackName: String
+    media: [String]
+}
+
+type WelcomeMessageResponse {
+    message: String
+    welcomeMessage: WelcomeMessage
+}
+
+type Mutation {
+    createWelcomeMessage(input: CreateWelcomeMessageInput!): WelcomeMessageResponse
+    changeWelcomeMessage(input: ChangeWelcomeMessageInput!): WelcomeMessageResponse
+    deleteWelcomeMessage(welcomeMessageId: String): String
+}
+
+type Query {
+    getOneWelcomeMessage(welcomeMessageId: String!): WelcomeMessage
+    getAllWelcomeMessage(creatorId: String!): [WelcomeMessage]
+}

@@ -1,0 +1,96 @@
+type StatSectionPercents{
+    chart: [DateAndAmount!]!
+    total: Int!
+    percent: Int!
+}
+
+type OneStat{
+    today: Int!
+    yesterday: Int!
+    percent: Int!
+}
+
+type DailyStats{
+    revenue: OneStat!
+    fans: OneStat!
+    newSubs: OneStat!
+    avgEarningFan: OneStat!
+}
+
+type OverallDailyStats {
+    previous24hTurnover: StatSectionPercents!
+    actual24hStats: DailyStats!
+}
+
+type StatSectionPercentsWithMax {
+    chart: [DateAndAmount!]!
+    totalAndPercent: TotalAndPercent!
+    maxValue: Int!
+}
+
+type DateNewExpired{
+    new: Int!
+    expired: Int!
+    date: Date!
+}
+
+type StatisticFollowersWithPercent{
+    chart: [DateNewExpired!]!
+    totalAndPercent: TotalAndPercent!
+    maxValue: Int!
+}
+
+type TotalAndPercent{
+    total: Int!
+    percent: Int!
+}
+
+type TopFanOverview{
+    name: String!
+    avatarUrl: String!
+    totalRevenue: Int!
+    revenueByPeriod: Int!
+}
+
+type TopModel{
+    name: String!
+    avatarUrl: String!
+    revenueByPeriod: Int!
+}
+
+type IncomeSource{
+    subscriptions: TotalAndPercent!
+    tips: TotalAndPercent!
+    posts: TotalAndPercent!
+    referrals: TotalAndPercent!
+    messages: TotalAndPercent!
+    streams: TotalAndPercent!
+}
+
+type GetOverallStatisticResponse {
+    totalEarnings: StatSectionPercentsWithMax!
+    followers: StatisticFollowersWithPercent!
+    incomeSources: IncomeSource!
+    totalEarningByQuantity: StatSectionPercentsWithMax!
+    topModels: [TopModel!]!
+    topFans: [TopFanOverview!]!
+}
+
+type OverallDetCompResponse {
+    creatorId: String!
+    creatorName: String!
+    totalRevenue: Float
+    newSubs: Int
+    newSubsRevenue: Float
+    tipsRevenue: Float
+    messagesRevenue: Float
+    textingRation: Float
+    openChats: Float
+    sellingChats: Float
+}
+
+type Query {
+    getOverallDailyStats(creatorIds: [String!]!): OverallDailyStats
+    getOverallStatistic(input: DatesFilterManyCreatorIdsInput): GetOverallStatisticResponse
+    getOverallDetailedComparison(input: DatesFilterManyCreatorIdsInput): [OverallDetCompResponse]
+}

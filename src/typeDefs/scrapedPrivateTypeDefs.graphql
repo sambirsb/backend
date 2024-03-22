@@ -1,0 +1,106 @@
+type Composition{
+    type: String
+    amountStats: [DateAndAmount]
+}
+
+type TopFan{
+    name: String
+    userName: String
+    avatarUrl: String
+    total: Float
+}
+
+type Best{
+    name: String
+    average: Float
+}
+
+type IncomeInfo{
+    subscription: Float
+    messages: Float
+    tips: Float
+}
+
+type GetCreatorStatisticResponse {
+    turnover: StatisticSection
+    subscription: StatisticSection
+    composition: [Composition]
+    topFans: [TopFan]
+    bestDay: [Best]
+    bestHour: [Best]
+}
+
+type GetOverallStatisticResponseOLD {
+    id: String
+    totalTurnover: StatisticSection
+    totalNewSubs: StatisticSection
+    totalPurchases: StatisticSection
+    incomeInfo: IncomeInfo
+}
+
+type DetStatsResponse{
+    date: Date
+    totalRevenue: Float
+    newSubs: Int
+    newSubsRevenue: Float
+    recSubsRevenue: Float
+    tipsRevenue: Float
+    messagesRevenue: Float
+    textingRation: Float
+    openChats: Int
+    sellingChats: Int
+    linkClicks: Int
+    conversionRate: Float
+}
+
+type ChartsByType {
+    date: Date!
+    subscription: Int!
+    tips: Int!
+    posts: Int!
+    referrals: Int!
+    messages: Int!
+    streams: Int!
+}
+
+type TotalChart {
+    total: Float!
+    subscription: Float!
+    tips: Float!
+    posts: Float!
+    referrals: Float!
+    messages: Float!
+    streams: Float!
+}
+
+type GetOFStatsResponse {
+    numberOfCreators: Int!
+    refunded: Int!
+    totalCharts: TotalChart
+    charts: [ChartsByType]
+}
+
+type OFDetStat {
+    creatorId: ID!
+    creatorName: String!
+    subscription: Int!
+    tips: Int!
+    messages: Int!
+    referrals: Int!
+    totalEarning: Int!
+    totalActiveFans: Int!
+    newActiveFans: Int!
+    newSubs: Int!
+    renews: Int!
+    expired: Int!
+}
+
+type Query {
+    getCreatorStatisticOLD(input: DatesFilterManyCreatorIdsInput): GetCreatorStatisticResponse
+    getDetailedStatisticOLD(input: DatesFilterManyCreatorIdsInput): [DetStatsResponse]
+    getOverallStatistic(input: DatesFilterManyCreatorIdsInput): GetOverallStatisticResponse
+    getOverallStatisticOLD(input: DatesFilterManyCreatorIdsInput): GetOverallStatisticResponseOLD
+    updateCreatorsStats(creatorIds: [String!]!): String
+    getOFStats(input: DatesFilterManyCreatorIdsInput): GetOFStatsResponse
+    getOFDetailedStats(input: DatesFilterManyCreatorIdsInput): [OFDetStat]
+}

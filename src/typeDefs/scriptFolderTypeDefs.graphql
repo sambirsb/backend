@@ -1,0 +1,53 @@
+type ScriptFolder {
+    id: ID!
+    folderName: String!
+    number: Int!
+    creatorId: ID!
+}
+
+input CreateScriptFolderInput {
+    folderName: String!
+    creatorId: ID!
+}
+
+input UpdateScriptFolderInput {
+    id: ID!
+    folderName: String
+    creatorId: ID!
+}
+
+type ScriptFolderResponse {
+    message: String!
+    scriptFolder: ScriptFolder
+}
+
+type ScriptForFolder {
+    id: ID!
+    name: String!
+    text: String!
+    fallbackName: String!
+    number: Int!
+}
+
+type ScriptFolderWithScript {
+    id: ID!
+    folderName: String!
+    number: Int!
+    creatorId: ID!
+    scripts: [ScriptForFolder]
+}
+
+type ScriptFoldersWithScripts {
+    scriptFolders: ScriptFolderWithScript
+}
+
+type Mutation {
+    createScriptFolder(input: CreateScriptFolderInput): ScriptFolderResponse
+    changeScriptFolder(input: UpdateScriptFolderInput): ScriptFolderResponse
+    deleteScriptFolder(id: String): String
+}
+
+type Query {
+    getScriptFolderById(id: String): ScriptFolder
+    getCreatorScriptFolders(creatorId: String): [ScriptFoldersWithScripts]
+}

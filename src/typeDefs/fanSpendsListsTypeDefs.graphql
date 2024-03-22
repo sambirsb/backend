@@ -1,0 +1,36 @@
+type FanSpendLists {
+    id: ID!
+    name: String!
+    minSpend: Int!
+    maxSpend: Int!
+    includeExpired: Boolean!
+    creatorId: ID!
+}
+
+input CreateFanSpendListsInput {
+    name: String!
+    minSpend: Int!
+    maxSpend: Int!
+    includeExpired: Boolean!
+    creatorId: ID!
+}
+
+input ChangeFanSpendListsInput {
+    id: ID!
+    name: String!
+    minSpend: Int!
+    maxSpend: Int!
+    includeExpired: Boolean!
+    creatorId: ID!
+}
+
+type Mutation {
+    createFanSpendLists(input: CreateFanSpendListsInput): FanSpendLists
+    changeFanSpendLists(input: ChangeFanSpendListsInput): FanSpendLists
+    deleteFanSpendLists(id: String): String
+}
+
+type Query {
+    getFanSpendListsById(id: String): FanSpendLists
+    getCreatorFanSpendLists(creatorId: String): [FanSpendLists]
+}

@@ -1,0 +1,82 @@
+type Task {
+    id: ID!
+    ownerId: ID!
+    performer: PerformerWithoutPerms!
+    title: String!
+    note: String
+    startDate: Date!
+    endDate: Date!
+    status: TaskStatusType
+}
+
+enum TaskStatusType {
+    InProgress
+    Completed
+    NotCompleted
+}
+
+type PerformerWithoutPerms {
+    id: ID!
+    teamId: ID!
+    userId: ID!
+    memberName: String!
+    active: Boolean!
+    note: String
+    role: MemberRoleSchema
+}
+
+type PerformerTask{
+    id: ID,
+    ownerId: String!
+    title: String!
+    note: String
+    performer: PerformerWithoutPerms!,
+    startDate: Date!
+    endDate: Date!,
+    status: String!
+}
+
+input CreateTaskInput {
+    title: String!
+    note: String
+    performerIds: [String!]!
+    startDate: Date
+    endDate: Date!
+    status: TaskStatusType
+}
+
+input ChangeTaskInput {
+    taskIds: [String!]!
+    title: String
+    note: String
+    performerIds: [String!]!
+    startDate: Date
+    endDate: Date
+    status: TaskStatusType
+}
+
+input ChangeTaskStatusInput {
+    taskId: String!
+    teamId: String!
+    status: TaskStatusType!
+}
+
+input GetMyTeamTasks {
+    startDate: Date!
+    endDate: Date!
+    ownerId: String!
+}
+
+type Mutation {
+    createTask(input: CreateTaskInput): [Task]
+    changeTask(input: ChangeTaskInput): [Task]
+    deleteTask(taskIds: [String]): String
+    changeTaskStatus(input: ChangeTaskStatusInput): Task
+}
+
+type Query {
+    getAllTasksOwner(input: DatesFilterInput): [Task]
+    getAllPerformers: [PerformerWithoutPerms]
+    getMyTasks(input: DatesFilterInput): [PerformerTask]
+    getMyTeamTasks(input: GetMyTeamTasks): [PerformerTask]
+}

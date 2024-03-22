@@ -1,0 +1,32 @@
+type ExpiringFans {
+    id: ID!
+    creatorId: ID!
+    createdBy: ID!
+    active: Boolean!
+    messageTiming: Int!
+    spendingLimitation: Boolean!
+    spendingLimitationSum: Int!
+    timeLimitation: Int!
+}
+
+input ChangeExpiringFansInput {
+    id: ID!
+    active: Boolean
+    messageTiming: Int
+    spendingLimitation: Boolean
+    spendingLimitationSum: Int
+    timeLimitation: Int
+}
+
+type ExpiringFansResponse {
+    message: String
+    expiringFans: ExpiringFans
+}
+
+type Mutation {
+    changeExpiringFans(input: ChangeExpiringFansInput): ExpiringFansResponse  
+}
+
+type Query {
+    getExpiringFans(creatorId: String): ExpiringFans
+}

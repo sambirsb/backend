@@ -1,0 +1,21 @@
+type PaymentUrl {
+    redirectUrl: String
+    checkoutSessionId: String
+}    
+
+input PaymentCheckoutInput {
+    priceId: String!,
+    creatorId: ID!
+}
+
+input PaymentPortalInput {
+    sessionId: String!
+}
+
+type Mutation {
+    paymentCheckout(input: PaymentCheckoutInput): PaymentUrl      
+    getBillingPortal(creatorId: String): String
+}
+
+
+

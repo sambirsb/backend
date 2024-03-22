@@ -1,0 +1,22 @@
+type CollectionList {
+    id: String!
+    name: String!
+}
+
+type NewSubListsResponse{
+    collectionLists: [CollectionList]
+    collectionListId: String
+}
+
+input ChangeNewSubsListInput {
+    creatorId: String!
+    listId: String!
+}
+
+type Mutation {
+    changeNewSubsList(input: ChangeNewSubsListInput): Creator
+}
+
+type Query {
+    getNewSubsLists(creatorId: String!): NewSubListsResponse
+}
